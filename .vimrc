@@ -2,12 +2,8 @@
 " Plugin Manager
 " - https://github.com/Shougo/dein.vim
 " --------------------------------------------------------------------------------
-
-" Install dein.vim if it is not installed.
-" ( http://qiita.com/delphinus35/items/00ff2c0ba972c6e41542 )
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-let s:toml = '~/.dein.toml'
 
 if &runtimepath !~# '/dein.vim'
   if !isdirectory(s:dein_repo_dir)
@@ -16,22 +12,20 @@ if &runtimepath !~# '/dein.vim'
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-if &compatible
-  set nocompatible
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+  let s:toml_dir = expand('~/')
+
+  call dein#load_toml(s:toml_dir . '.dein.toml', {'lazy': 0})
+  "call dein#load_toml(s:toml_dir . '.dein_lazy.toml', {'lazy': 1})
+
+  call dein#end()
+  call dein#save_state()
 endif
 
-call dein#begin(s:dein_dir)
+filetype plugin indent on
+syntax enable
 
-if dein#load_cache([expand('<sfile>', s:toml)])
-  call dein#load_toml(s:toml, {'lazy': 0})
-  call dein#save_cache()
-endif
-
-if dein#check_install()
-  call dein#install()
-endif
-
-call dein#end()
 
 " --------------------------------------------------------------------------------
 " Plugin Preference
